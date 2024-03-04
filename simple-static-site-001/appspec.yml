@@ -1,0 +1,20 @@
+version: 0.0
+os: linux
+files:
+  - source: app/
+    destination: /usr/share/nginx/html  # Document Root for NGINX on AL23
+hooks:
+  BeforeInstall:
+    - location: scripts/install.sh # Install Nginx
+      timeout: 500
+      runas: root
+    - location: scripts/start.sh  # Start Nginx
+      timeout: 300
+      runas: root
+    - location: scripts/cleanup.sh # Clean the Directory Before Copying the Updated Files
+      timeout: 500
+      runas: root
+  ApplicationStop:
+    - location: scripts/stop.sh
+      timeout: 300
+      runas: root
